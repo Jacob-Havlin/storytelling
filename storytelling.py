@@ -4,19 +4,24 @@ from transformers import pipeline
 generator = pipeline("text-generation", model="gpt2")
 
 # Create initial prompt
-prompt = "It was a dark and stormy night."
+prompt = input("What is your story prompt? ")
 
 # Initialize story string
 story = ""
 
-for _ in range(5): 
+while True:
+    
+    if prompt.lower() == "quit":
+        break
+   
     continuation = generator(prompt, num_return_sequences=1, pad_token_id=generator.tokenizer.eos_token_id)
    
     # Add the generated text to the story
     story += " " + continuation[0]['generated_text']
+    print(story)
     
     # Use last sentence as the next prompt
-    prompt = continuation[0]['generated_text'].split('.')[-2]
+    prompt_continue = input("Houw would you like to continue this? ")
 
 print("Generated Story:\n")
 print(story)
